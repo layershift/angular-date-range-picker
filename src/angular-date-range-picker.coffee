@@ -30,12 +30,8 @@ angular.module("dateRangePicker").directive "dateRangePicker", ["$compile", "$ti
       <a ng-click="move(+1, $event)" class="angular-date-range-picker__next-month">&#9654;</a>
     </div>
     <div class="angular-date-range-picker__panel">
-      <div ng-show="showRanged">
-        Select range: <select ng-click="prevent_select($event)" ng-model="quick" ng-options="e.range as e.label for e in quickList"></select>
-      </div>
       <div class="angular-date-range-picker__buttons">
         <a ng-click="ok($event)" class="angular-date-range-picker__apply">Apply</a>
-        <a ng-click="hide($event)" class="angular-date-range-picker__cancel">cancel</a>
       </div>
     </div>
   </div>
@@ -121,7 +117,7 @@ angular.module("dateRangePicker").directive "dateRangePicker", ["$compile", "$ti
       if $scope.showRanged
         $scope.range = if $scope.selection
           start = $scope.selection.start.clone().startOf("month").startOf("day")
-          end = start.clone().add(2, "months").endOf("month").startOf("day")
+          end = start.clone().add(1, "months").endOf("month").startOf("day")
           moment().range(start, end)
         else
           moment().range(
@@ -163,12 +159,12 @@ angular.module("dateRangePicker").directive "dateRangePicker", ["$compile", "$ti
         w = parseInt((7 + date.date() - d) / 7)
 
         sel = false
-        dis = false
+        dis = date > moment()
 
         if $scope.showRanged
           if $scope.start
             sel = date == $scope.start
-            dis = date < $scope.start
+            dis = date < $scope.start || date > moment()
           else
             sel = $scope.selection && $scope.selection.contains(date)
         else
@@ -213,6 +209,7 @@ angular.module("dateRangePicker").directive "dateRangePicker", ["$compile", "$ti
 
     $scope.select = (day, $event) ->
       $event?.stopPropagation?()
+      return unless day
       return if day.disabled
 
       if $scope.showRanged
@@ -233,7 +230,7 @@ angular.module("dateRangePicker").directive "dateRangePicker", ["$compile", "$ti
       if $scope.showRanged
         $scope.range = moment().range(
           $scope.range.start.add(n, 'months').startOf("month").startOf("day"),
-          $scope.range.start.clone().add(2, "months").endOf("month").startOf("day")
+          $scope.range.start.clone().add(1, "months").endOf("month").startOf("day")
         )
       else
         $scope.date.add(n, 'months')
