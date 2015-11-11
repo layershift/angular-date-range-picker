@@ -43,11 +43,11 @@ angular.module("dateRangePicker").directive "dateRangePicker", ["$compile", "$ti
   template: """
   <span tabindex="0" ng-keydown="hide()" class="angular-date-range-picker__input">
     <span ng-if="showRanged">
-      <span ng-show="!!model">{{ model.start.format("ll") }} - {{ model.end.format("ll") }}</span>
+      <span ng-show="!!model">{{ model.start.format("DD MMM YYYY") }} - {{ model.end.format("DD MMM YYYY") }}</span>
       <span ng-hide="!!model">Select date range</span>
     </span>
     <span ng-if="!showRanged">
-      <span ng-show="!!model">{{ model.format("ll") }}</span>
+      <span ng-show="!!model">{{ model.format("DD MMM YYYY") }}</span>
       <span ng-hide="!!model">Select date</span>
     </span>
   </span>
